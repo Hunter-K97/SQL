@@ -1,0 +1,31 @@
+--Create a grocery store database
+
+CREATE TABLE storeitems (id INTEGER PRIMARY KEY, Section TEXT, item_name TEXT, cost INTEGER, quantity integer);
+
+INSERT INTO storeitems VALUES (1, "Aisle_One", "basketball", 25, 50);
+INSERT INTO storeitems VALUES (2, "Aisle_Two", "football", 25, 51);
+INSERT INTO storeitems VALUES (3, "Aisle_Three", "baseball", 5, 1000);
+INSERT INTO storeitems VALUES (4, "Aisle_Four", "bowling ball", 75, 25);
+INSERT INTO storeitems VALUES (5, "Aisle_Five", "tennis ball", 2, 4000);
+INSERT INTO storeitems VALUES (6, "Aisle_One", "bat", 25, 48);
+INSERT INTO storeitems VALUES (7, "Aisle_Two", "glove", 15, 10);
+INSERT INTO storeitems VALUES (8, "Aisle_Three", "shoes", 100, 50);
+INSERT INTO storeitems VALUES (9, "Aisle_Four", "frisbee", 25, 15);
+INSERT INTO storeitems VALUES (10, "Aisle_Five", "disc golf starter set", 100, 10);
+INSERT INTO storeitems VALUES (11, "Aisle_One", "2 Pack Baseketball", 50, 2);
+INSERT INTO storeitems VALUES (12, "Aisle_Two", "Hat", 15, 78);
+INSERT INTO storeitems VALUES (13, "Aisle_Two", "hockey puck", 5, 1000);
+INSERT INTO storeitems VALUES (14, "Aisle_Two", "hockey stick", 75, 25);
+INSERT INTO storeitems VALUES (15, "Aisle_Two", "face-guard", 32, 45);
+
+--display the database ordered by price. 
+SELECT * FROM storeitems ORDER BY cost asc;
+
+--display the database items over 50 cost 
+SELECT * FROM storeitems WHERE cost > 50;
+
+--display the database ordered by aisle
+SELECT Section, item_name FROM storeitems ORDER BY section asc;
+
+--display the average cost of items that have a greater cost than 5.
+SELECT AVG(cost) FROM storeitems WHERE cost >5;
