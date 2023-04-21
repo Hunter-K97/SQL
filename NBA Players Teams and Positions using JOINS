@@ -1,0 +1,100 @@
+/* Create Table Listing NBA Players With Positions as 1 through 5 and teams as 1-30*/
+
+CREATE TABLE NBA_Players (id INTEGER PRIMARY KEY autoincrement,
+full_name TEXT,
+position TEXT,
+Team INTEGER);
+
+INSERT INTO NBA_Players VALUES (1, "Lebron James" , '3', 19);
+INSERT INTO NBA_Players VALUES (2, "Stephen Curry", '1', 8);
+INSERT INTO NBA_Players VALUES (3, "James Harden", '2', 25);
+INSERT INTO NBA_Players VALUES (4, "Giannis Antetokounmpo", '4', 29);
+INSERT INTO NBA_Players VALUES (5, "Jimmy Butler", '3', 2);
+INSERT INTO NBA_Players VALUES (6, "Anthony Davis", '4', 19);
+INSERT INTO NBA_Players VALUES (7, "De'Aaron Fox", '1', 4);
+INSERT INTO NBA_Players VALUES (9, "Julius Randle", '4', 30);
+INSERT INTO NBA_Players Values (10, "Cade Cunningham", '1', 5);
+INSERT INTO NBA_Players VALUES (11, 'Jaden Ivey','2',5 );
+INSERT INTO NBA_Players VALUES (12, 'Jalen Duren','5',5);
+
+
+/*Creat Table Listing NBA Teams */
+CREATE TABLE Team (id INTEGER PRIMARY KEY,
+title TEXT);
+
+INSERT INTO Team VALUES (1, "Celtics");
+INSERT INTO Team VALUES (2, "Heat");
+INSERT INTO Team VALUES (3, "Nuggets");
+INSERT INTO Team VALUES (4, "Kings");
+INSERT INTO Team VALUES (5, "Pistons");
+INSERT INTO Team VALUES (6, "Pelicans");
+INSERT INTO Team VALUES (7, "Thunder");
+INSERT INTO Team VALUES (8, "Warriors");
+INSERT INTO Team VALUES (9, "Clippers");
+INSERT INTO Team VALUES (10, "Pacers");
+INSERT INTO Team VALUES (11, "Bulls");
+INSERT INTO Team VALUES (12, "Magic");
+INSERT INTO Team VALUES (13, "Mavericks");
+INSERT INTO Team VALUES (14, "Nets");
+INSERT INTO Team VALUES (15, "Raptors");
+INSERT INTO Team VALUES (16, "Hawks");
+INSERT INTO Team VALUES (17, "Grizzlies");
+INSERT INTO Team VALUES (18, "Suns");
+INSERT INTO Team VALUES (19, "Lakers");
+INSERT INTO Team VALUES (20, "Trail Blazers");
+INSERT INTO Team VALUES (21, "Spurs");
+INSERT INTO Team VALUES (22, "Rockets");
+INSERT INTO Team VALUES (23, "Hornets");
+INSERT INTO Team VALUES (24, "Wizards");
+INSERT INTO Team VALUES (25, "76ers");
+INSERT INTO Team VALUES (26, "Cavaliers");
+INSERT INTO Team VALUES (27, "Timberwolves");
+INSERT INTO Team VALUES (28, "Jazz");
+INSERT INTO Team VALUES (29, "Bucks");
+INSERT INTO Team VALUES (30, "Knicks");
+
+/* Create Table Listing NBA Player Positions as full text */
+
+CREATE TABLE Position (id integer PRIMARY KEY, position TEXT);
+INSERT INTO Position VALUES (1, 'Point Guard');
+INSERT INTO Position VALUES (2, 'Shooting Guard');
+INSERT INTO Position VALUES (3, 'Small Forward');
+INSERT INTO Position VALUES (4, 'Power Forward');
+INSERT INTO POSITION VALuES (5, 'Center');
+
+/*Create Table Listing NBA Players with their preferred teammate*/
+CREATE TABLE Preferred_Teammate (id INTEGER PRIMARY KEY AUTOINCREMENT, Player1_id INTEGER, Player2_id INTEGER);
+SELECT * FROM Preferred_Teammate;
+INSERT INTO Preferred_Teammate VALUES (1, 11, 12);
+INSERT INTO Preferred_Teammate VALUES (2, 1, 6);
+
+/*Create Table to Show Preferred Teammates as 2 sets of names */
+SELECT p1.full_name AS Player1_name, p2.full_name AS player2_name
+FROM Preferred_Teammate pt
+    JOIN NBA_Players p1
+    ON pt.player1_id = p1.id
+    JOIN NBA_Players p2 ON pt.player2_id = p2.id;
+    
+/*Create Table to show players listed next to their current Position */
+Select NBA_Players.full_name, position.position
+    FROM NBA_Players
+    JOIN Position 
+    ON NBA_Players.position = position.id;
+    
+/*Create Table to show players next to their current team */
+
+Select NBA_Players.full_name, Team.title as Current_team
+    FROM NBA_Players
+    JOIN Team
+    ON NBA_Players.team = Team.id
+    ORDER BY Current_team;
+    
+/*Combine the Above two tables using multiple joins to list player full_name, current_team and position in one table */
+
+Select NBA_Players.full_name as Name_Of_Player, Team.title as Current_Team, position.position as Position
+    FROM NBA_Players
+    JOIN Team
+    ON NBA_Players.team = Team.id
+    JOIN Position
+    ON NBA_Players.position = position.id
+    ORDER BY Position;
