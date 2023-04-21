@@ -70,8 +70,30 @@ GROUP BY artist_name
 ORDER BY avg(popularity) asc LIMIT 5
 ;
 
-# Finally, I modified my danceability and energy level code to remove Bad Bunny and J Balvin, as those are not artists I prefer hearing
+#Next, I found out what artist released the longest song on the list 
+SELECT 
+SD.artist_name
+, SD.track_name
+, SD.duration_ms
+FROM BIT_DB.SpotifyData SD
+ORDER BY SD.duration_ms desc;
 
+# next, I found the avg duration of distinct artist's songs, converting the milliseconds into minutes
+SELECT SD.artist_name,
+       AVG(SD.duration_ms) / 60000 AS duration_minutes
+  FROM BIT_DB.Spotifydata SD
+ GROUP BY artist_name
+ ORDER BY duration_minutes desc;
+
+# I decide I don't want to listen to songs that are above 4 minutes long, so I filtered those out next.
+SELECT SD.artist_name,
+       SD.track_name,
+       SD.duration_ms / 60000 AS duration_in_minutes
+  FROM BIT_DB.SpotifyData SD
+  WHERE duration_in_minutes < 4;
+
+
+# Finally, I modified my danceability and energy level code to remove Bad Bunny and J Balvin, as those are not artists I prefer hearing
 SELECT SD.artist_name,
        SD.track_name,
        SD.danceability,
@@ -83,6 +105,7 @@ SELECT SD.artist_name,
        AND artist_name <> 'J Balvin'
  ORDER BY artist_name, danceability
  ;
+
 
 
 
