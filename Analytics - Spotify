@@ -52,14 +52,12 @@ FROM BIT_DB.SpotifyData SD
 WHERE SD.id BETWEEN '1' AND '25';
 
 # Next, I determined the avg popularity, danceability, and energy by artist and track.
-SELECT
-artist_name
-,track_name
-,avg(popularity)
-,avg(danceability)
-,avg(energy)
-FROM BIT_DB.spotifydata
-GROUP BY artist_name, track_name
+SELECT 
+SD.artist_name
+, AVG(SD.danceability)
+, AVG(SD.energy)
+FROM BIT_DB.Spotifydata SD
+GROUP BY SD.artist_name;
 
 # Next, I found the 5 least popular artist according to this list based on avg popularity
 SELECT
