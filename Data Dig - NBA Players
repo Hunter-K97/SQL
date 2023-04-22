@@ -885,7 +885,7 @@ INSERT INTO players(Player,Team,Conference,Date,Position,Height,Weight,Age,Draft
 INSERT INTO players(Player,Team,Conference,Date,Position,Height,Weight,Age,Draft_Year,Seasons_in_league,Season,Season_short,Predraft_Team,Real_value,Height_CM,Weight_KG,Last_Season) VALUES ('Karl Malone','Utah Jazz',NULL,'Nov 6, 2000','PF','6''9',265,37,1985,15,'2000-2001',2001,'Louisiana Tech',1.0,206,120,0);
 INSERT INTO players(Player,Team,Conference,Date,Position,Height,Weight,Age,Draft_Year,Seasons_in_league,Season,Season_short,Predraft_Team,Real_value,Height_CM,Weight_KG,Last_Season) VALUES ('John Stockton','Utah Jazz',NULL,'Nov 6, 2000','PG','6''1',170,38,1984,16,'2000-2001',2001,'Gonzaga',1.0,185,77,0);
 
-## Display the minimum, maximum, and average age for player of hte wee recipients
+## Display the minimum, maximum, and average age for player of the week recipients
 SELECT
 AVG(age) as average_age,
 MIN(age) as minimum_age,
