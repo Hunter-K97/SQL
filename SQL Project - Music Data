@@ -1,0 +1,61 @@
+** #1. Show Customers (their full names, customer ID, and country) who are not in the US. (Hint: != or <> can be used to say "is not equal to").
+
+SELECT customers.FirstName, customers.LastName, customers.CustomerID, customers.Country
+FROM chinook.customers
+WHERE Country <> 'USA';
+
+** #2. Show only the Customers from Brazil.
+SELECT customers.FirstName, customers.LastName, customers.CustomerID, customers.Country
+FROM chinook.customers
+WHERE Country = 'Brazil';
+
+** 3.Find the Invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country.
+Select customers.FirstName, customers.LastName, invoices.InvoiceID, invoices.InvoiceDate, invoices.BillingCountry
+FROM chinook.customers
+JOIN chinook.invoices
+ON customers.CustomerID = invoices.CustomerID
+WHERE invoices.BillingCountry = 'Brazil'
+
+
+** 4. Show the Employees who are Sales Agents
+SELECT * 
+FROM chinook.employees
+WHERE chinook.employees.title LIKE '%Agent%'
+;
+
+** 5. Find a unique/distinct list of billing countries from the Invoice table
+SELECT distinct invoices.BillingCountry
+FROM chinook.invoices;
+
+** 6. Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+SELECT chinook.Employees.LastName, chinook.Employees.Firstname, chinook.Invoices.InvoiceId
+FROM chinook.Employees 
+JOIN chinook.Customers 
+ON chinook.Customers.SupportRepId = chinook.Employees.EmployeeId
+JOIN chinook.Invoices 
+ON chinook.Invoices.CustomerId = chinook.Customers.CustomerId
+;
+
+** 7.Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers
+SELECT E.FirstName, E.LastName, C.FirstName, C.LastName, I.total, C.Country
+   FROM chinook.employees E
+   JOIN chinook.customers C ON C.SupportRepID = E.EmployeeId
+   JOIN chinook.invoices I ON I.CustomerID = c.CustomerID
+  
+  
+** 8. How many Invoices were there in 2009?
+SELECT COUNT(InvoiceDate) FROM INVOICES
+WHERE InvoiceDate LIKE '2009%';
+total is 83
+
+** 9. What are the total sales for 2009?
+SELECT SUM(total) 
+from invoices
+WHERE invoices.InvoiceDate BETWEEN '2009-01-01' AND  '2009-12-31';
+
+
+** 10. Write a query that includes the purchased track name with each invoice line ID.
+SELECT tracks.name, invoice_items.InvoiceLineId from tracks
+JOIN invoice_items ON tracks.Trackid = invoice_items.TrackId;
+
+** 11.
