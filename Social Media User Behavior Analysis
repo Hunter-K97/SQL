@@ -4,43 +4,62 @@
 
 -- Creating Users Table
 CREATE TABLE Users (
-  UserID INTEGER PRIMARY KEY,
-  UserName TEXT,
-  Country TEXT,
-  AccountCreationDate TEXT
+    UserID              INTEGER PRIMARY KEY,
+    UserName            TEXT,
+    Country             TEXT,
+    AccountCreationDate TEXT
 );
+
 
 -- Creating Posts Table
 CREATE TABLE Posts (
-  PostID INTEGER PRIMARY KEY,
-  UserID INTEGER,
-  PostDate TEXT,
-  PostContent TEXT,
-  Likes INTEGER,
-  Shares INTEGER,
-  FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    PostID      INTEGER PRIMARY KEY,
+    UserID      INTEGER,
+    PostDate    TEXT,
+    PostContent TEXT,
+    Likes       INTEGER,
+    Shares      INTEGER,
+    FOREIGN KEY (
+        UserID
+    )
+    REFERENCES Users (UserID) 
 );
+
 
 -- Creating Comments Table
 CREATE TABLE Comments (
-  CommentID INTEGER PRIMARY KEY,
-  PostID INTEGER,
-  UserID INTEGER,
-  CommentDate TEXT,
-  CommentContent TEXT,
-  FOREIGN KEY (PostID) REFERENCES Posts(PostID),
-  FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    CommentID      INTEGER PRIMARY KEY,
+    PostID         INTEGER,
+    UserID         INTEGER,
+    CommentDate    TEXT,
+    CommentContent TEXT,
+    FOREIGN KEY (
+        PostID
+    )
+    REFERENCES Posts (PostID),
+    FOREIGN KEY (
+        UserID
+    )
+    REFERENCES Users (UserID) 
 );
+
 
 -- Creating Follows Table
 CREATE TABLE Follows (
-  FollowID INTEGER PRIMARY KEY,
-  FollowerUserID INTEGER,
-  FollowedUserID INTEGER,
-  FollowDate TEXT,
-  FOREIGN KEY (FollowerUserID) REFERENCES Users(UserID),
-  FOREIGN KEY (FollowedUserID) REFERENCES Users(UserID)
+    FollowID       INTEGER PRIMARY KEY,
+    FollowerUserID INTEGER,
+    FollowedUserID INTEGER,
+    FollowDate     TEXT,
+    FOREIGN KEY (
+        FollowerUserID
+    )
+    REFERENCES Users (UserID),
+    FOREIGN KEY (
+        FollowedUserID
+    )
+    REFERENCES Users (UserID) 
 );
+
 
 -- Inputting Data into table for analysis with SQL Queries
 -- For this section of the project, I used Python to create a command to create the SQL INSERT statements that were required for the data.
@@ -59,84 +78,295 @@ CREATE TABLE Follows (
 --Government price big sister specific fact. Tonight these see. Both much boy if range the carry.
 --Those country energy low audience.')
 
+-- Checking for Null Values
+SELECT *
+  FROM Comments
+ WHERE CommentID IS NULL OR 
+       PostID IS NULL OR 
+       UserID IS NULL OR 
+       CommentContent IS NULL;
 
-## Cleaning Data - 
+SELECT *
+  FROM Follows
+ WHERE FollowID IS NULL OR 
+       FollowerUserID IS NULL OR 
+       FollowedUserID IS NULL OR 
+       FollowDate IS NULL;
 
--- Search for Null Values in the tables [All of these queries came up with no results]
-SELECT * FROM Comments
-WHERE CommentID IS NULL OR PostID IS NULL OR UserID IS NULL OR CommentContent IS NULL;
+SELECT *
+  FROM Posts
+ WHERE PostID IS NULL OR 
+       UserID IS NULL OR 
+       PostDate IS NULL OR 
+       PostContent IS NULL OR 
+       Likes IS NULL OR 
+       Shares IS NULL;
 
-SELECT * FROM Follows
-WHERE FollowID IS NULL OR FollowerUserID IS NULL or FollowedUserID IS NULL OR FollowDate IS NULL;
+SELECT *
+  FROM Users
+ WHERE UserID IS NULL OR 
+       UserName IS NULL OR 
+       Country IS NULL OR 
+       AccountCreationDate IS NULL;
 
-SELECT * FROM Posts
-WHERE PostID IS NULL OR UserID IS NULL or PostDate IS NULL OR PostContent IS NULL OR Likes IS NULL OR Shares IS NULL;
 
-SELECT * FROM Users
-WHERE UserID IS NULL OR UserName IS NULL OR Country IS NULL OR AccountCreationDate IS NULL;
 
 -- Checking for Duplicates
-SELECT UserName, COUNT(*)
-FROM Users
-GROUP BY UserName
-HAVING COUNT(*) > 1;
+SELECT UserName,
+       COUNT( * ) 
+  FROM Users
+ GROUP BY UserName
+HAVING COUNT( * ) > 1;
+
 
 -- This tells me we have 7 duplicates user ID's I want to confirm this, so I view the results for UserNames that flagged as duplicates.   
-SELECT * FROM USERS
-Where UserName = "Barbara Harris" OR UserName = "Bradley Moore" 
-OR UserName = "Eric Martin" 
-OR UserName = "Heather Williams" 
-OR UserName = "Joseph Hall" 
-OR UserName = "Joshua Williams" 
-OR UserName = "Michael Torres"
-ORDER BY UserName Asc;
-
--- I decide to write some code to replace the duplicate names rather than deleting rows, since the other information in the table is differentiating enough, and this is a fake database anyway
-UPDATE Users
-SET UserName = 'Billy Jean'
-WHERE UserID = 91;
+SELECT *
+  FROM USERS
+ WHERE UserName = "Barbara Harris" OR 
+       UserName = "Bradley Moore" OR 
+       UserName = "Eric Martin" OR 
+       UserName = "Heather Williams" OR 
+       UserName = "Joseph Hall" OR 
+       UserName = "Joshua Williams" OR 
+       UserName = "Michael Torres"
+ ORDER BY UserName ASC;
 
 UPDATE Users
-SET UserName = 'Dolph Lundgren'
-WHERE UserID = 1123;
+   SET UserName = 'Billy Jean'
+ WHERE UserID = 91;
 
 UPDATE Users
-SET UserName = 'Homer Griffin'
-WHERE UserID = 1214;
+   SET UserName = 'Dolph Lundgren'
+ WHERE UserID = 1123;
 
 UPDATE Users
-SET UserName = 'Eric Salazar'
-WHERE UserID = 1098;
+   SET UserName = 'Homer Griffin'
+ WHERE UserID = 1214;
 
 UPDATE Users
-SET UserName = 'Joseph Legendary'
-WHERE UserID = 1183;
+   SET UserName = 'Eric Salazar'
+ WHERE UserID = 1098;
 
 UPDATE Users
-SET UserName = 'Barney Fred'
-WHERE UserID = 1064;
+   SET UserName = 'Joseph Legendary'
+ WHERE UserID = 1183;
 
 UPDATE Users
-SET UserName = 'Joeseph Alvaradez'
-WHERE UserID = 1088;
+   SET UserName = 'Barney Fred'
+ WHERE UserID = 1064;
 
---Now, the above code does not show any duplicates when run again.
+UPDATE Users
+   SET UserName = 'Joeseph Alvaradez'
+ WHERE UserID = 1088;
 
-## Data Exploration
+SELECT COUNT(DISTINCT UserID) 
+  FROM Users;
 
--- count number of distinct users [Returns 1000, which matches the lines I had the python script create previously.]
-SELECT COUNT(DISTINCT UserID)
-FROM Users;
+SELECT COUNT( * ) 
+  FROM Posts;
 
--- count number of posts [1500 as previously created]
-SELECT COUNT(*)
-FROM Posts;
-
--- Determine the distinct countries representated in the data
 SELECT DISTINCT Country
-FROM Users;
+  FROM Users;
 
---
+
+-- Average # of followers per user ID 
+SELECT FollowedUserID,
+       AVG(FollowerCount) AS AverageFollowers
+  FROM (
+           SELECT FollowedUserID,
+                  COUNT( * ) AS FollowerCount
+             FROM Follows
+            GROUP BY FollowedUserID
+       )
+       AS Subquery
+ GROUP BY FollowedUserID;
+
+
+-- find users who have never made a post
+SELECT UserID
+  FROM Users
+ WHERE UserID NOT IN (
+           SELECT DISTINCT UserID
+             FROM Posts
+       );
+
+-- total number of shares per post sorted in descending order 
+SELECT PostID,
+       SUM(Shares) AS TotalShares
+  FROM Posts
+ GROUP BY PostID
+ ORDER BY TotalShares DESC;
+
+
+-- Finding the particular post with the most shares based on result of above query
+
+SELECT PostContent,
+       UserID,
+       Shares
+  FROM Posts
+       JOIN
+       Users ON Users.UserID = Posts.UserID
+ WHERE PostID = "1165";
+
+
+-- Finding the top 5 most active coutries based on number of posts [Brazil]
+SELECT Country,
+       COUNT( * ) AS PostCount
+  FROM Users
+       JOIN
+       Posts ON Users.UserID = Posts.UserID
+ GROUP BY Country
+ ORDER BY PostCount DESC
+ LIMIT 5;
+
+
+-- Finding all posts from Brazil using LIKE
+SELECT p.PostContent,
+       p.PostID,
+       p.Likes,
+       p.Shares,
+       u.UserID,
+       u.UserName
+  FROM Posts p
+       JOIN
+       Users u ON p.UserID = u.UserID
+ WHERE Country LIKE "brazil%";
+
+
+-- Next, I do some user analysis
+-- This gives me total posts per user
+SELECT UserID,
+       COUNT( * ) 
+  FROM Posts
+ GROUP BY UserID;
+
+
+-- This gives me the top 5 users with the most # of followers
+SELECT FollowedUserID,
+       COUNT( * ) 
+  FROM Follows
+ GROUP BY FollowedUserID
+ ORDER BY COUNT( * ) DESC
+ LIMIT 5;
+
+-- This determines the usre with the highest # of posts
+SELECT UserID,
+       COUNT( * ) AS PostCount
+  FROM Posts
+ GROUP BY UserID
+ ORDER BY PostCount DESC
+ LIMIT 5;
+
+-- This returns the average number of likes per user
+SELECT UserID,
+       AVG(Likes) AS AverageLikes
+  FROM Posts
+ GROUP BY UserID;
+
+
+-- This will give me the user with the highest likes PER post
+SELECT UserID,
+       COUNT( * ) AS PostCount,
+       SUM(Likes) AS TotalLikes,
+       SUM(Likes) / COUNT( * ) AS EngagementRate
+  FROM Posts
+ GROUP BY UserID
+ ORDER BY EngagementRate DESC
+ LIMIT 5;
+
+
+-- This calculates average share per user 
+SELECT UserID,
+       AVG(Shares) AS AverageShares
+  FROM Posts
+ GROUP BY UserID;
+
+
+-- Next up, I am going to do some analysis of Posts
+-- this SQL will return the average number of posts per day 
+SELECT DATE(PostDate),
+       COUNT( * ) 
+  FROM Posts
+ GROUP BY DATE(PostDate);
+
+
+-- This will find the posts with the most likes
+SELECT PostID,
+       LIkes
+  FROM Posts
+ ORDER BY Likes DESC
+ LIMIT 5;
+
+
+-- This will find the posts with the least likes
+SELECT PostID,
+       LIkes
+  FROM Posts
+ ORDER BY Likes ASC
+ LIMIT 5;
+
+
+-- Determine the avg. length of posts
+SELECT AVG(LENGTH(PostContent) ) AS AverageLength
+  FROM Posts;
+
+
+--identify posts with the highest engagement of likes and shares combined
+SELECT PostID,
+       (Likes + Shares) AS TotalEngagement
+  FROM Posts
+ ORDER BY TotalEngagement DESC
+ LIMIT 5;
+
+
+-- find the posts with the most comments
+SELECT p.PostID,
+       COUNT( * ) AS CommentCount
+  FROM Posts p
+       JOIN
+       Comments c ON p.PostID = c.PostID
+ GROUP BY p.PostID
+ ORDER BY CommentCount DESC
+ LIMIT 5;
+
+
+-- find avg. number of likes per day for posts
+SELECT DATE(PostDate) AS PostDay,
+       AVG(Likes) AS AverageLikes
+  FROM Posts
+ GROUP BY PostDay;
+
+
+
+-- finally, i'll do a couple advanced analysis processes on the data
+-- determining the most influential users based on likes, shares and followers
+SELECT p.UserId,
+       AVG(p.Likes) AS AverageLikes,
+       Count(f.FollowerUserID) AS FollowerCount
+  FROM Posts p
+       JOIN
+       Follows f ON p.UserID = f.FollowedUserID
+ GROUP BY p.UserID
+ ORDER BY AverageLikes DESC,
+          FollowerCount DESC
+ LIMIT 5;
+
+
+-- Since we determined Brazil had the most users, we are going to determine who has the most engagement from followers in brazil
+SELECT p.UserID,
+       u.Country,
+       SUM(p.Likes + p.Shares) AS TotalEngagement
+  FROM posts p
+       JOIN
+       Follows F ON p.UserID = f.FollowedUserID
+       JOIN
+       Users u ON f.FollowerUserID = u.UserID
+ WHERE u.Country = "Brazil"
+ GROUP BY p.UserID,
+          u.Country
+ ORDER BY TotalEngagement DESC
+ LIMIT 10;
+
 
 
 
