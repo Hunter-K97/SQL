@@ -58,3 +58,85 @@ CREATE TABLE Follows (
 --INSERT INTO Comments (CommentID, PostID, UserID, CommentDate, CommentContent) VALUES ('2500', '2144', '1027', '2023-04-22', 'Ability several student few hair. Wonder seven morning religious.
 --Government price big sister specific fact. Tonight these see. Both much boy if range the carry.
 --Those country energy low audience.')
+
+
+## Cleaning Data - 
+
+-- Search for Null Values in the tables [All of these queries came up with no results]
+SELECT * FROM Comments
+WHERE CommentID IS NULL OR PostID IS NULL OR UserID IS NULL OR CommentContent IS NULL;
+
+SELECT * FROM Follows
+WHERE FollowID IS NULL OR FollowerUserID IS NULL or FollowedUserID IS NULL OR FollowDate IS NULL;
+
+SELECT * FROM Posts
+WHERE PostID IS NULL OR UserID IS NULL or PostDate IS NULL OR PostContent IS NULL OR Likes IS NULL OR Shares IS NULL;
+
+SELECT * FROM Users
+WHERE UserID IS NULL OR UserName IS NULL OR Country IS NULL OR AccountCreationDate IS NULL;
+
+-- Checking for Duplicates
+SELECT UserName, COUNT(*)
+FROM Users
+GROUP BY UserName
+HAVING COUNT(*) > 1;
+
+-- This tells me we have 7 duplicates user ID's I want to confirm this, so I view the results for UserNames that flagged as duplicates.   
+SELECT * FROM USERS
+Where UserName = "Barbara Harris" OR UserName = "Bradley Moore" 
+OR UserName = "Eric Martin" 
+OR UserName = "Heather Williams" 
+OR UserName = "Joseph Hall" 
+OR UserName = "Joshua Williams" 
+OR UserName = "Michael Torres"
+ORDER BY UserName Asc;
+
+-- I decide to write some code to replace the duplicate names rather than deleting rows, since the other information in the table is differentiating enough, and this is a fake database anyway
+UPDATE Users
+SET UserName = 'Billy Jean'
+WHERE UserID = 91;
+
+UPDATE Users
+SET UserName = 'Dolph Lundgren'
+WHERE UserID = 1123;
+
+UPDATE Users
+SET UserName = 'Homer Griffin'
+WHERE UserID = 1214;
+
+UPDATE Users
+SET UserName = 'Eric Salazar'
+WHERE UserID = 1098;
+
+UPDATE Users
+SET UserName = 'Joseph Legendary'
+WHERE UserID = 1183;
+
+UPDATE Users
+SET UserName = 'Barney Fred'
+WHERE UserID = 1064;
+
+UPDATE Users
+SET UserName = 'Joeseph Alvaradez'
+WHERE UserID = 1088;
+
+--Now, the above code does not show any duplicates when run again.
+
+## Data Exploration
+
+-- count number of distinct users [Returns 1000, which matches the lines I had the python script create previously.]
+SELECT COUNT(DISTINCT UserID)
+FROM Users;
+
+-- count number of posts [1500 as previously created]
+SELECT COUNT(*)
+FROM Posts;
+
+-- Determine the distinct countries representated in the data
+SELECT DISTINCT Country
+FROM Users;
+
+--
+
+
+
