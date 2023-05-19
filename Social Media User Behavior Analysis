@@ -1,2 +1,60 @@
 ## In this project, I analyze a dataset from a fictional social media platform. I use SQL to extract interesting patterns and insights about user behavior on the platform.
-## Note
+## Notes - This is a fake platform I created the database for using SQLite RDBMS. I used Python code to create INSERT INTO statments to populate my data tables. That code is in my Python Repository on Github.
+########################################################################################################################################################################################################################################
+
+-- Creating Users Table
+CREATE TABLE Users (
+  UserID INTEGER PRIMARY KEY,
+  UserName TEXT,
+  Country TEXT,
+  AccountCreationDate TEXT
+);
+
+-- Creating Posts Table
+CREATE TABLE Posts (
+  PostID INTEGER PRIMARY KEY,
+  UserID INTEGER,
+  PostDate TEXT,
+  PostContent TEXT,
+  Likes INTEGER,
+  Shares INTEGER,
+  FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+-- Creating Comments Table
+CREATE TABLE Comments (
+  CommentID INTEGER PRIMARY KEY,
+  PostID INTEGER,
+  UserID INTEGER,
+  CommentDate TEXT,
+  CommentContent TEXT,
+  FOREIGN KEY (PostID) REFERENCES Posts(PostID),
+  FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+-- Creating Follows Table
+CREATE TABLE Follows (
+  FollowID INTEGER PRIMARY KEY,
+  FollowerUserID INTEGER,
+  FollowedUserID INTEGER,
+  FollowDate TEXT,
+  FOREIGN KEY (FollowerUserID) REFERENCES Users(UserID),
+  FOREIGN KEY (FollowedUserID) REFERENCES Users(UserID)
+);
+
+-- Inputting Data into table for analysis with SQL Queries
+-- For this section of the project, I used Python to create a command to create the SQL INSERT statements that were required for the data.
+-- Below are some Exapmles of some of the lines that Python Output for me
+-- INSERT INTO Users (UserID, UserName, Country, AccountCreationDate) VALUES ('1001', 'Daniel Cooke', 'Djibouti', '2021-08-18');
+-- INSERT INTO Users (UserID, UserName, Country, AccountCreationDate) VALUES ('1002', 'Dillon Harmon', 'Niger', '2020-11-18');
+-- INSERT INTO Follows (FollowID, FollowerUserID, FollowedUserID, FollowDate) VALUES ('1001', '1185', '1475', '2021-04-10');
+-- INSERT INTO Follows (FollowID, FollowerUserID, FollowedUserID, FollowDate) VALUES ('1002', '1264', '1186', '2022-02-14');
+-- INSERT INTO Posts (PostID, UserID, PostDate, PostContent, Likes, Shares) VALUES ('2499', '1377', '2022-07-08', 'Artist try physical pretty social citizen. Personal social money police article. Daughter no their smile age.
+-- specially present process pattern matter. Huge audience point bed hand why.', '978', '214');
+-- INSERT INTO Posts (PostID, UserID, PostDate, PostContent, Likes, Shares) VALUES ('2500', '1064', '2021-07-22', 'National employee too information television. Rest major eat for product sign Mrs. Receive create serious full wait red.
+-- Security language base all. School ability respond.', '285', '437');
+--INSERT INTO Comments (CommentID, PostID, UserID, CommentDate, CommentContent) VALUES ('2499', '1916', '1356', '2022-06-14', 'Moment camera manage international either develop whether. Want group hit bed.
+--Production short surface fine. Either traditional great effect.');
+--INSERT INTO Comments (CommentID, PostID, UserID, CommentDate, CommentContent) VALUES ('2500', '2144', '1027', '2023-04-22', 'Ability several student few hair. Wonder seven morning religious.
+--Government price big sister specific fact. Tonight these see. Both much boy if range the carry.
+--Those country energy low audience.')
